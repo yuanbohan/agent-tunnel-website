@@ -112,7 +112,7 @@ button:focus-visible {
 
 .hero__stage {
   display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(320px, 0.88fr);
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.9fr);
   gap: 28px;
   align-items: start;
   min-height: min(56svh, 620px);
@@ -120,7 +120,7 @@ button:focus-visible {
 }
 
 .hero__copy {
-  width: min(100%, 620px);
+  width: min(100%, 760px);
 }
 
 .eyebrow {
@@ -148,6 +148,10 @@ h1 {
   max-width: 10ch;
 }
 
+.hero__title-line {
+  display: block;
+}
+
 h2 {
   font-size: clamp(1.65rem, 3vw, 2.8rem);
   line-height: 1;
@@ -165,20 +169,9 @@ h3 {
   line-height: 1.65;
 }
 
-.hero__kicker {
-  margin: 20px 0 0;
-  color: var(--accent);
-  font-size: 0.95rem;
-}
-
 .hero__visuals {
   position: relative;
   min-height: 360px;
-}
-
-.device-frame,
-.install-strip__inner {
-  border-radius: var(--radius);
 }
 
 .device-frame {
@@ -188,6 +181,7 @@ h3 {
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(9, 12, 10, 0.95);
   box-shadow: var(--shadow-hero);
+  border-radius: var(--radius);
 }
 
 .device-frame img {
@@ -206,15 +200,19 @@ h3 {
   transform: rotate(5deg);
 }
 
+.install-strip__inner {
+  border-radius: var(--radius);
+}
+
 .install-strip {
   background: var(--bg-dark);
-  padding-bottom: 36px;
+  padding-bottom: 20px;
 }
 
 .install-strip__inner {
   display: grid;
-  gap: 12px;
-  padding: 16px 20px;
+  gap: 10px;
+  padding: 16px 20px 14px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(12, 17, 14, 0.94);
   box-shadow: var(--shadow-hero);
@@ -226,7 +224,7 @@ h3 {
 
 .install-block {
   display: grid;
-  gap: 12px;
+  gap: 6px;
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
@@ -235,14 +233,14 @@ h3 {
 .install-tabs {
   display: flex;
   gap: 4px;
-  margin-bottom: 2px;
+  margin-bottom: 0;
   border-bottom: 1px solid var(--line-dark);
 }
 
 .install-panels {
-  min-height: 98px;
+  min-height: 76px;
   position: relative;
-  padding-top: 2px;
+  padding-top: 0;
   width: 100%;
   min-width: 0;
 }
@@ -283,7 +281,7 @@ h3 {
   inset: 0;
   width: 100%;
   display: block;
-  min-height: 76px;
+  min-height: 60px;
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
@@ -317,7 +315,7 @@ h3 {
   display: block;
   width: fit-content;
   max-width: 100%;
-  white-space: nowrap;
+  white-space: pre;
   color: var(--accent);
 }
 
@@ -325,8 +323,8 @@ h3 {
   margin: 0;
   display: flex;
   align-items: center;
-  min-height: 48px;
-  padding: 8px 14px;
+  min-height: 42px;
+  padding: 7px 12px;
   border: 1px dashed var(--line-dark);
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.02);
@@ -339,9 +337,9 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 14px;
-  min-height: 52px;
-  padding: 8px 14px;
+  gap: 10px;
+  min-height: 46px;
+  padding: 7px 12px;
   border: 1px solid var(--line-dark);
   border-radius: var(--radius);
   background: #0b0f0d;
@@ -689,29 +687,27 @@ pre {
   }
 
   .hero__stage {
-    grid-template-columns: minmax(0, 1fr) minmax(240px, 280px);
-    gap: 18px;
-    min-height: auto;
-    padding-bottom: 12px;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 0.72fr);
+    gap: 20px;
+    min-height: min(48svh, 540px);
+    padding-bottom: 20px;
   }
 
   .hero__visuals {
-    display: block;
-    min-height: auto;
-    margin-top: 0;
+    min-height: 300px;
   }
 
   .device-frame {
-    position: relative;
-    width: min(240px, 60vw);
-    left: auto;
-    right: auto;
-    top: auto;
-    transform: none;
+    width: min(20vw, 200px);
+    padding: 10px;
+  }
+
+  .device-frame--1 {
+    left: 18px;
   }
 
   .device-frame--2 {
-    display: none;
+    right: 14px;
   }
 }
 
@@ -727,19 +723,52 @@ pre {
   }
 
   .hero__inner {
-    padding-top: 16px;
+    padding: 16px 0 8px;
   }
 
   .hero__stage {
-    padding-top: 26px;
-    gap: 18px;
+    min-height: auto;
+    padding-top: 14px;
+    padding-bottom: 4px;
+  }
+
+  .hero__copy {
+    max-width: 100%;
   }
 
   .hero__visuals {
     display: none;
   }
 
+  h1 {
+    max-width: 13ch;
+    font-size: clamp(2rem, 8.8vw, 3rem);
+    line-height: 0.94;
+    text-wrap: balance;
+  }
+
   .install-strip__inner {
-    padding: 14px;
+    padding: 14px 16px 12px;
+  }
+
+  .install-strip {
+    padding-bottom: 16px;
+  }
+
+  .section {
+    padding: 44px 0;
+  }
+
+  .section__grid {
+    gap: 16px;
+  }
+
+  .section--contact {
+    padding-top: 40px;
+    padding-bottom: 56px;
+  }
+
+  .section__intro {
+    gap: 8px;
   }
 }

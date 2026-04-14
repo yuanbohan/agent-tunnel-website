@@ -2,8 +2,11 @@ export const siteContent = {
   brand: "Agent Tunnel",
   previewLabel: "Private preview",
   hero: {
-    title: "Orchestrate your agents from your phone.",
-    kicker: "",
+    titleLines: [
+      "Orchestrate",
+      "your agents",
+      "from your phone.",
+    ],
     screenshots: [
       {
         src: "/images/agent-tunnel-session-list.png",
@@ -37,7 +40,7 @@ export const siteContent = {
   },
   flow: {
     eyebrow: "How it works",
-    title: "A short path to a live session.",
+    title: "",
     steps: [
       {
         number: "01",
@@ -60,15 +63,15 @@ export const siteContent = {
         number: "04",
         title: "",
         body: "",
-        command: "tunnel claude",
+        command: `export TUNNEL_AUTH_TOKEN=<your token>
+tunnel claude`,
       },
     ],
   },
   contact: {
     eyebrow: "Get the mobile app",
     title: "Invite-only. Ask for it.",
-    body:
-      "No app-store listing yet. Send a short note and I\u2019ll share the build.",
+    body: "",
     card: {
       title: "Request access",
       links: [

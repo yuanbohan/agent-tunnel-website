@@ -9,6 +9,14 @@ const escapeHtml = (value) =>
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
 
+const heroTitleMarkup = (siteContent.hero.titleLines ?? [siteContent.hero.title])
+  .map(
+    (line) => `
+      <span class="hero__title-line">${escapeHtml(line)}</span>
+    `,
+  )
+  .join("");
+
 const screenshotMarkup = siteContent.hero.screenshots
   .map(
     (shot, index) => `
@@ -75,8 +83,7 @@ document.querySelector("#app").innerHTML = `
 
         <div class="hero__stage">
           <div class="hero__copy">
-            <h1 id="hero-title">${escapeHtml(siteContent.hero.title)}</h1>
-            ${siteContent.hero.kicker ? `<p class="hero__kicker">${escapeHtml(siteContent.hero.kicker)}</p>` : ""}
+            <h1 id="hero-title">${heroTitleMarkup}</h1>
           </div>
 
           <div class="hero__visuals" aria-hidden="true">
@@ -161,7 +168,7 @@ document.querySelector("#app").innerHTML = `
         <div class="container section__grid">
           <div class="section__intro">
             <p class="eyebrow">${escapeHtml(siteContent.flow.eyebrow)}</p>
-            <h2 id="flow-title">${escapeHtml(siteContent.flow.title)}</h2>
+            ${siteContent.flow.title ? `<h2 id="flow-title">${escapeHtml(siteContent.flow.title)}</h2>` : ""}
           </div>
 
           <div class="flow-layout" data-testid="how-it-works">
@@ -177,7 +184,7 @@ document.querySelector("#app").innerHTML = `
           <div class="section__intro contact-intro">
             <p class="eyebrow eyebrow--dark">${escapeHtml(siteContent.contact.eyebrow)}</p>
             <h2 id="contact-title">${escapeHtml(siteContent.contact.title)}</h2>
-            <p>${escapeHtml(siteContent.contact.body)}</p>
+            ${siteContent.contact.body ? `<p>${escapeHtml(siteContent.contact.body)}</p>` : ""}
           </div>
 
           <aside class="contact-card" aria-label="${escapeHtml(siteContent.contact.card.title)}">
