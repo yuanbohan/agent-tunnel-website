@@ -2,11 +2,7 @@ export const siteContent = {
   brand: "Agent Tunnel",
   previewLabel: "Private preview",
   hero: {
-    titleLines: [
-      "Orchestrate",
-      "your agents",
-      "from your phone.",
-    ],
+    title: "Orchestrate your agents from your phone.",
     screenshots: [
       {
         src: "/images/agent-tunnel-session-list.png",
