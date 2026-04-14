@@ -40,25 +40,19 @@ export const siteContent = {
     steps: [
       {
         number: "01",
-        title: "Install the app and tunnel",
-        body:
-          "Run the install command for tunnel and ask for the mobile app.",
+        title: "Install the tunnel CLI on your computer",
       },
       {
         number: "02",
-        title: "Create your account and sign in",
-        body:
-          "Use your invite code once and keep the same account for the app.",
+        title: "Request and install the mobile app on your phone",
       },
       {
         number: "03",
-        title: "Create an agent token",
-        body: "Generate a token in the app and keep it for the terminal.",
+        title: "Create your account, sign in, and generate a token",
       },
       {
         number: "04",
-        title: "",
-        body: "",
+        title: "Run tunnel in your terminal",
         command: `export TUNNEL_AUTH_TOKEN=<your token>
 tunnel claude`,
       },
