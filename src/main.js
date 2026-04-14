@@ -14,20 +14,24 @@ const screenshotMarkup = siteContent.hero.screenshots
     (shot, index) => `
       <figure class="device-frame device-frame--${index + 1}">
         <img src="${escapeHtml(shot.src)}" alt="${escapeHtml(shot.alt)}" />
-        <figcaption>${escapeHtml(shot.caption)}</figcaption>
       </figure>
     `,
   )
   .join("");
 
 const flowMarkup = siteContent.flow.steps
-  .map(
-    (step) => `
+    .map(
+      (step) => `
       <li class="step-list__item">
         <p class="step-list__number">${escapeHtml(step.number)}</p>
         <div>
-          <h3>${escapeHtml(step.title)}</h3>
-          <p>${escapeHtml(step.body)}</p>
+          ${step.title ? `<h3>${escapeHtml(step.title)}</h3>` : ""}
+          ${step.body ? `<p>${escapeHtml(step.body)}</p>` : ""}
+          ${
+            step.command
+              ? `<pre class="step-list__command"><code>${escapeHtml(step.command)}</code></pre>`
+              : ""
+          }
         </div>
       </li>
     `,
@@ -72,7 +76,7 @@ document.querySelector("#app").innerHTML = `
         <div class="hero__stage">
           <div class="hero__copy">
             <h1 id="hero-title">${escapeHtml(siteContent.hero.title)}</h1>
-            <p class="hero__kicker">${escapeHtml(siteContent.hero.kicker)}</p>
+            ${siteContent.hero.kicker ? `<p class="hero__kicker">${escapeHtml(siteContent.hero.kicker)}</p>` : ""}
           </div>
 
           <div class="hero__visuals" aria-hidden="true">
@@ -109,49 +113,46 @@ document.querySelector("#app").innerHTML = `
                 .join("")}
             </div>
 
-            ${siteContent.install.platforms
-              .map(
-                (platform, index) => `
-                  <div
-                    class="install-panel${index === 0 ? " is-active" : ""}"
-                    role="tabpanel"
-                    id="panel-${escapeHtml(platform.id)}"
-                    aria-labelledby="tab-${escapeHtml(platform.id)}"
-                    data-install-panel="${escapeHtml(platform.id)}"
-                    ${index === 0 ? "" : "hidden"}
-                  >
-                    ${
-                      platform.supported
-                        ? `
-                          <div class="install-command">
-                            <pre>${escapeHtml(platform.command)}</pre>
-                            <button
-                              type="button"
-                              class="copy-button"
-                              data-copy-install
-                              data-command="${escapeHtml(platform.command)}"
-                              data-tooltip="${escapeHtml(siteContent.install.actionLabel)}"
-                              aria-label="${escapeHtml(siteContent.install.actionLabel)}"
-                            >
-                              ${COPY_ICON_SVG}
-                              ${CHECK_ICON_SVG}
-                            </button>
-                          </div>
-                        `
-                        : `
-                          <p class="install-unsupported">
-                            ${escapeHtml(platform.message)}
-                          </p>
-                        `
-                    }
-                  </div>
-                `,
-              )
-              .join("")}
+            <div class="install-panels">
+              ${siteContent.install.platforms
+                .map(
+                  (platform, index) => `
+                    <div
+                      class="install-panel${index === 0 ? " is-active" : ""}"
+                      role="tabpanel"
+                      id="panel-${escapeHtml(platform.id)}"
+                      aria-labelledby="tab-${escapeHtml(platform.id)}"
+                      data-install-panel="${escapeHtml(platform.id)}">
+                      ${
+                        platform.supported
+                          ? `
+                            <div class="install-command">
+                              <pre>${escapeHtml(platform.command)}</pre>
+                              <button
+                                type="button"
+                                class="copy-button"
+                                data-copy-install
+                                data-command="${escapeHtml(platform.command)}"
+                                data-tooltip="${escapeHtml(siteContent.install.actionLabel)}"
+                                aria-label="${escapeHtml(siteContent.install.actionLabel)}"
+                              >
+                                ${COPY_ICON_SVG}
+                                ${CHECK_ICON_SVG}
+                              </button>
+                            </div>
+                          `
+                          : `
+                            <div class="install-command">
+                              <pre>${escapeHtml(platform.message ?? "not supported yet.")}</pre>
+                            </div>
+                          `
+                      }
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
 
-            <p class="install-verify" data-testid="install-verify">
-              <code>${escapeHtml(siteContent.install.verify.command)}</code>
-            </p>
           </div>
         </div>
       </section>
@@ -240,11 +241,6 @@ const activateTab = (targetId) => {
   panels.forEach((panel) => {
     const isActive = panel.dataset.installPanel === targetId;
     panel.classList.toggle("is-active", isActive);
-    if (isActive) {
-      panel.removeAttribute("hidden");
-    } else {
-      panel.setAttribute("hidden", "");
-    }
   });
 };
 
