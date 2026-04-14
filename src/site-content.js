@@ -2,20 +2,16 @@ export const siteContent = {
   brand: "Agent Tunnel",
   previewLabel: "Private preview",
   hero: {
-    title: "View and operate your agent from your phone.",
-    kicker: "No web client. No extra surface.",
+    title: "Orchestrate your agents from your phone.",
+    kicker: "",
     screenshots: [
       {
         src: "/images/agent-tunnel-session-list.png",
-        alt:
-          "Mobile session list showing a live agent-tunnel session preview.",
-        caption: "See live sessions as soon as tunnel comes online.",
+        alt: "Mobile session list showing a live agent-tunnel session preview.",
       },
       {
         src: "/images/agent-tunnel-session-detail.png",
-        alt:
-          "Mobile session detail screen showing terminal output and input controls.",
-        caption: "Open the live terminal view and continue the same session.",
+        alt: "Mobile session detail screen showing terminal output and input controls.",
       },
     ],
   },
@@ -35,12 +31,9 @@ export const siteContent = {
         id: "windows",
         label: "Windows",
         supported: false,
-        message: "Windows is not supported yet.",
+        message: "not supported yet.",
       },
     ],
-    verify: {
-      command: "tunnel --version",
-    },
   },
   flow: {
     eyebrow: "How it works",
@@ -65,9 +58,9 @@ export const siteContent = {
       },
       {
         number: "04",
-        title: "Run tunnel and open the session",
-        body:
-          "Start tunnel with the CLI agent you already run, then open the matching session on your phone.",
+        title: "",
+        body: "",
+        command: "tunnel claude",
       },
     ],
   },

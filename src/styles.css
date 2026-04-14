@@ -114,9 +114,9 @@ button:focus-visible {
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(320px, 0.88fr);
   gap: 28px;
-  align-items: end;
+  align-items: start;
   min-height: min(56svh, 620px);
-  padding: 36px 0 24px;
+  padding: 20px 0 24px;
 }
 
 .hero__copy {
@@ -173,7 +173,7 @@ h3 {
 
 .hero__visuals {
   position: relative;
-  min-height: 500px;
+  min-height: 360px;
 }
 
 .device-frame,
@@ -183,7 +183,7 @@ h3 {
 
 .device-frame {
   position: absolute;
-  width: min(21vw, 292px);
+  width: min(16.5vw, 230px);
   padding: 12px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(9, 12, 10, 0.95);
@@ -194,25 +194,15 @@ h3 {
   border-radius: calc(var(--radius) - 1px);
 }
 
-.device-frame figcaption {
-  margin-top: 12px;
-  font-size: 0.88rem;
-  line-height: 1.5;
-}
-
-.device-frame figcaption {
-  color: var(--text-muted-dark);
-}
-
 .device-frame--1 {
   left: 28px;
-  bottom: 34px;
+  top: 0;
   transform: rotate(-3deg);
 }
 
 .device-frame--2 {
   right: 22px;
-  bottom: 30px;
+  top: 34px;
   transform: rotate(5deg);
 }
 
@@ -237,7 +227,7 @@ h3 {
 .install-block {
   display: grid;
   gap: 12px;
-  width: fit-content;
+  width: 100%;
   max-width: 100%;
   margin: 0 auto;
 }
@@ -247,6 +237,14 @@ h3 {
   gap: 4px;
   margin-bottom: 2px;
   border-bottom: 1px solid var(--line-dark);
+}
+
+.install-panels {
+  min-height: 98px;
+  position: relative;
+  padding-top: 2px;
+  width: 100%;
+  min-width: 0;
 }
 
 .install-tab {
@@ -281,11 +279,46 @@ h3 {
 }
 
 .install-panel {
-  display: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  display: block;
+  min-height: 76px;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .install-panel.is-active {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.step-list__command {
+  margin: 12px 0 0;
+  padding: 14px 16px;
+  border: 2px solid rgba(143, 245, 109, 0.56);
+  border-radius: calc(var(--radius) + 1px);
+  background: linear-gradient(135deg, #0e1a16, #09110e);
+  color: var(--text-dark);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 1.02rem;
+  line-height: 1.45;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  overflow-x: auto;
+  box-shadow:
+    0 16px 38px rgba(7, 9, 8, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.step-list__command code {
   display: block;
+  width: fit-content;
+  max-width: 100%;
+  white-space: nowrap;
+  color: var(--accent);
 }
 
 .install-unsupported {
@@ -307,7 +340,7 @@ h3 {
   align-items: center;
   justify-content: flex-start;
   gap: 14px;
-  min-height: 48px;
+  min-height: 52px;
   padding: 8px 14px;
   border: 1px solid var(--line-dark);
   border-radius: var(--radius);
@@ -315,18 +348,19 @@ h3 {
 }
 
 .install-command pre {
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   min-width: 0;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow-x: auto;
+  padding-bottom: 2px;
 }
 
 pre {
-  overflow-x: auto;
   margin: 0;
   font-family: "IBM Plex Mono", monospace;
   font-size: 0.96rem;
   line-height: 1.6;
-  white-space: pre-wrap;
-  word-break: break-word;
   color: var(--text-dark);
 }
 
@@ -641,7 +675,10 @@ pre {
 }
 
 @media (max-width: 1080px) {
-  .hero__stage,
+  h1 {
+    font-size: clamp(2.8rem, 8.4vw, 4.8rem);
+  }
+
   .step-list,
   .contact-grid {
     grid-template-columns: 1fr;
@@ -652,11 +689,28 @@ pre {
   }
 
   .hero__stage {
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 280px);
+    gap: 18px;
     min-height: auto;
     padding-bottom: 12px;
   }
 
   .hero__visuals {
+    display: block;
+    min-height: auto;
+    margin-top: 0;
+  }
+
+  .device-frame {
+    position: relative;
+    width: min(240px, 60vw);
+    left: auto;
+    right: auto;
+    top: auto;
+    transform: none;
+  }
+
+  .device-frame--2 {
     display: none;
   }
 }
@@ -679,6 +733,10 @@ pre {
   .hero__stage {
     padding-top: 26px;
     gap: 18px;
+  }
+
+  .hero__visuals {
+    display: none;
   }
 
   .install-strip__inner {
