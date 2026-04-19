@@ -1,69 +1,75 @@
 export const siteContent = {
   brand: "Agent Tunnel",
-  previewLabel: "Private preview",
+  previewLabel: "Preview",
+  nav: [
+    { label: "Setup", href: "#setup" },
+    { label: "Access", href: "#access" },
+  ],
+  githubUrl: "https://github.com/yuanbohan/tunnel",
   hero: {
-    title: "Orchestrate your agents from your phone.",
+    eyebrow: "Terminal to phone",
+    titleLines: ["Run local agents.", "Check them on phone."],
+    actions: [
+      { label: "Install tunnel", href: "#setup", variant: "primary" },
+      { label: "Request access", href: "#access", variant: "secondary" },
+    ],
+    terminal: {
+      eyebrow: "Core flow",
+      lines: [
+        {
+          command: "tunnel auth login",
+          note: "Save local auth on the machine.",
+        },
+        {
+          command: "tunnel run claude",
+          note: "Wrap the launcher you already use.",
+        },
+      ],
+    },
     screenshots: [
       {
         src: "/images/agent-tunnel-session-list.png",
-        alt: "Mobile session list showing a live agent-tunnel session preview.",
+        alt: "Agent Tunnel mobile session list with recent output previews.",
+        label: "Sessions",
       },
       {
         src: "/images/agent-tunnel-session-detail.png",
-        alt: "Mobile session detail screen showing terminal output and input controls.",
+        alt: "Agent Tunnel mobile session detail with terminal output and input controls.",
+        label: "Attach",
       },
     ],
   },
-  install: {
-    eyebrow: "Install",
-    actionLabel: "Copy install command",
-    copiedLabel: "Copied!",
-    platforms: [
+  setup: {
+    eyebrow: "Setup",
+    title: "Install. Auth. Run.",
+    body: "",
+    actionLabel: "Copy command",
+    copiedLabel: "Copied",
+    steps: [
       {
-        id: "unix",
-        label: "Mac/Linux",
-        supported: true,
+        number: "01",
+        title: "Install",
         command:
           "curl -fsSL https://raw.githubusercontent.com/yuanbohan/tunnel/main/install.sh | sh",
       },
       {
-        id: "windows",
-        label: "Windows",
-        supported: false,
-        message: "not supported yet.",
-      },
-    ],
-  },
-  flow: {
-    eyebrow: "How it works",
-    title: "",
-    steps: [
-      {
-        number: "01",
-        title: "Install the tunnel CLI on your computer",
-      },
-      {
         number: "02",
-        title: "Request and install the mobile app on your phone",
+        title: "Auth",
+        command: "tunnel auth login",
       },
       {
         number: "03",
-        title: "Create your account, sign in, and generate a token",
-      },
-      {
-        number: "04",
-        title: "Run tunnel in your terminal",
-        command: `export TUNNEL_AUTH_TOKEN=<your token>
-tunnel claude`,
+        title: "Run",
+        command: "tunnel run claude",
       },
     ],
   },
-  contact: {
-    eyebrow: "Get the mobile app",
-    title: "Invite-only. Ask for it.",
-    body: "",
+  access: {
+    eyebrow: "Access",
+    title: "Request access.",
+    body: "Android preview build by request.",
     card: {
-      title: "Request access",
+      title: "Contact",
       links: [
         {
           label: "yuanbo.han@gmail.com",
@@ -79,6 +85,6 @@ tunnel claude`,
     },
   },
   footer: {
-    note: "Early preview. Shared with a small group of friends.",
+    note: "Run local. Check from phone.",
   },
 };
