@@ -45,31 +45,53 @@ const heroTitleMarkup = siteContent.hero.titleLines
   .map((line) => `<span class="hero__title-line">${escapeHtml(line)}</span>`)
   .join("");
 
-const navMarkup = siteContent.nav
-  .map((item) => `<a href="${escapeHtml(item.href)}">${escapeHtml(item.label)}</a>`)
-  .join("");
+const renderHeroPeek = (shot) => `
+  <div class="hero-viewer__peek" aria-hidden="true">
+    <img
+      class="hero-viewer__peek-image hero-viewer__peek-image--primary"
+      data-hero-peek-primary
+      src="${escapeHtml(shot.src)}"
+      alt=""
+    />
+    <img
+      class="hero-viewer__peek-image hero-viewer__peek-image--secondary"
+      data-hero-peek-secondary
+      src=""
+      alt=""
+    />
+    <div class="hero-viewer__peek-shadow"></div>
+  </div>
+`;
 
-const heroTerminalMarkup = siteContent.hero.terminal.lines
-  .map(
-    (line) => `
-      <li class="terminal-card__line">
-        <code class="terminal-card__command">$ ${escapeHtml(line.command)}</code>
-        <p class="terminal-card__note">${escapeHtml(line.note)}</p>
-      </li>
-    `,
-  )
-  .join("");
-
-const heroScreenshotMarkup = siteContent.hero.screenshots
-  .map(
-    (shot, index) => `
-      <figure class="phone-shot phone-shot--hero phone-shot--${index + 1}">
-        <span class="phone-shot__label">${escapeHtml(shot.label)}</span>
-        <img src="${escapeHtml(shot.src)}" alt="${escapeHtml(shot.alt)}" />
-      </figure>
-    `,
-  )
-  .join("");
+const renderHeroViewerSlide = (shot, index, active = false) => `
+  <article class="hero-viewer__slide${active ? " is-active" : ""}" data-hero-slide data-index="${index}">
+    <div class="hero-viewer__image-shell">
+      <button
+        type="button"
+        class="hero-viewer__hotzone hero-viewer__hotzone--prev"
+        data-hero-direction="prev"
+        aria-label="Show previous screenshot"
+      >
+        <span class="hero-viewer__hotzone-icon" aria-hidden="true">←</span>
+      </button>
+      <img
+        class="hero-viewer__image"
+        data-testid="hero-viewer-image"
+        src="${escapeHtml(shot.src)}"
+        alt="${escapeHtml(shot.alt)}"
+      />
+      <div class="hero-viewer__gloss" aria-hidden="true"></div>
+      <button
+        type="button"
+        class="hero-viewer__hotzone hero-viewer__hotzone--next"
+        data-hero-direction="next"
+        aria-label="Show next screenshot"
+      >
+        <span class="hero-viewer__hotzone-icon" aria-hidden="true">→</span>
+      </button>
+    </div>
+  </article>
+`;
 
 const setupStepsMarkup = siteContent.setup.steps
   .map(
@@ -111,9 +133,6 @@ document.querySelector("#app").innerHTML = `
           <span class="brandlock__name">${escapeHtml(siteContent.brand)}</span>
         </a>
         <div class="masthead__actions">
-          <nav class="masthead__nav" aria-label="Primary">
-            ${navMarkup}
-          </nav>
           <a
             class="github-link"
             href="${escapeHtml(siteContent.githubUrl)}"
@@ -147,17 +166,13 @@ document.querySelector("#app").innerHTML = `
           </div>
 
           <div class="hero__visual" data-testid="hero-visual">
-            <article class="terminal-card">
-              <div class="terminal-card__topline">
-                <p>${escapeHtml(siteContent.hero.terminal.eyebrow)}</p>
+            <div class="hero-viewer" data-hero-viewer>
+              <div class="hero-viewer__stage">
+                ${renderHeroPeek(siteContent.hero.screenshots[1])}
+                <div class="hero-viewer__deck">
+                  ${renderHeroViewerSlide(siteContent.hero.screenshots[0], 0, true)}
+                </div>
               </div>
-              <ol class="terminal-card__lines">
-                ${heroTerminalMarkup}
-              </ol>
-            </article>
-
-            <div class="hero__phones">
-              ${heroScreenshotMarkup}
             </div>
           </div>
         </div>
@@ -235,3 +250,130 @@ document.querySelectorAll("[data-copy-value]").forEach((button) => {
     }
   });
 });
+
+const heroViewer = document.querySelector("[data-hero-viewer]");
+
+if (heroViewer instanceof HTMLDivElement) {
+  const heroViewerStage = heroViewer.querySelector(".hero-viewer__stage");
+  const heroViewerDeck = heroViewer.querySelector(".hero-viewer__deck");
+  const heroPeek = heroViewer.querySelector(".hero-viewer__peek");
+  const heroPeekPrimary = heroViewer.querySelector("[data-hero-peek-primary]");
+  const heroPeekSecondary = heroViewer.querySelector("[data-hero-peek-secondary]");
+  let activeIndex = 0;
+  let isAnimating = false;
+
+  const buildHeroSlide = (index) => {
+    const template = document.createElement("template");
+    template.innerHTML = renderHeroViewerSlide(
+      siteContent.hero.screenshots[index],
+      index,
+    ).trim();
+    return template.content.firstElementChild;
+  };
+
+  const animatePeek = (direction, nextActiveIndex) => {
+    if (
+      !(heroPeek instanceof HTMLDivElement) ||
+      !(heroPeekPrimary instanceof HTMLImageElement) ||
+      !(heroPeekSecondary instanceof HTMLImageElement)
+    ) {
+      return () => {};
+    }
+
+    const nextPeekIndex =
+      (nextActiveIndex + 1) % siteContent.hero.screenshots.length;
+    heroPeekSecondary.src = siteContent.hero.screenshots[nextPeekIndex].src;
+    heroPeek.dataset.direction = direction;
+    heroPeek.classList.add("is-shifting");
+    heroPeekPrimary.dataset.direction = direction;
+    heroPeekSecondary.dataset.direction = direction;
+    heroPeekPrimary.classList.add("is-leaving");
+    heroPeekSecondary.classList.add("is-entering");
+
+    return () => {
+      heroPeekPrimary.src = heroPeekSecondary.src;
+      heroPeekSecondary.removeAttribute("src");
+      heroPeek.classList.remove("is-shifting");
+      delete heroPeek.dataset.direction;
+      heroPeekPrimary.classList.remove("is-leaving");
+      heroPeekSecondary.classList.remove("is-entering");
+      delete heroPeekPrimary.dataset.direction;
+      delete heroPeekSecondary.dataset.direction;
+    };
+  };
+
+  const goToSlide = (direction) => {
+    if (
+      !(heroViewerStage instanceof HTMLDivElement) ||
+      !(heroViewerDeck instanceof HTMLDivElement) ||
+      isAnimating
+    ) {
+      return;
+    }
+
+    const activeSlide = heroViewerDeck.querySelector("[data-hero-slide].is-active");
+    if (!(activeSlide instanceof HTMLElement)) return;
+
+    const offset = direction === "next" ? 1 : -1;
+    const nextIndex =
+      (activeIndex + offset + siteContent.hero.screenshots.length) %
+      siteContent.hero.screenshots.length;
+
+    if (nextIndex === activeIndex) return;
+
+    const incomingSlide = buildHeroSlide(nextIndex);
+    if (!(incomingSlide instanceof HTMLElement)) return;
+
+    isAnimating = true;
+    incomingSlide.dataset.direction = direction;
+    activeSlide.dataset.direction = direction;
+    incomingSlide.classList.add("is-entering");
+    activeSlide.classList.add("is-leaving");
+    const finalizePeek = animatePeek(direction, nextIndex);
+    heroViewerDeck.append(incomingSlide);
+
+    let finishedAnimations = 0;
+    let didFinalize = false;
+
+    const finalize = () => {
+      if (didFinalize) return;
+      finishedAnimations += 1;
+      if (finishedAnimations < 2) return;
+
+      didFinalize = true;
+      activeSlide.remove();
+      incomingSlide.className = "hero-viewer__slide is-active";
+      activeIndex = nextIndex;
+      finalizePeek();
+      isAnimating = false;
+    };
+
+    incomingSlide.addEventListener("animationend", finalize, { once: true });
+    activeSlide.addEventListener("animationend", finalize, { once: true });
+    window.setTimeout(() => {
+      finishedAnimations = 2;
+      finalize();
+    }, 640);
+  };
+
+  heroViewer.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const control = target.closest("[data-hero-direction]");
+    if (!(control instanceof HTMLButtonElement)) return;
+
+    const direction = control.dataset.heroDirection;
+    if (direction !== "next" && direction !== "prev") return;
+    goToSlide(direction);
+  });
+
+  window.addEventListener("keydown", (event) => {
+    if (event.defaultPrevented || event.altKey || event.metaKey || event.ctrlKey) return;
+    if (event.key === "ArrowRight") {
+      goToSlide("next");
+    }
+    if (event.key === "ArrowLeft") {
+      goToSlide("prev");
+    }
+  });
+}

@@ -41,4 +41,4 @@ A walkthrough video section will be re-introduced when a real video exists.
 
 ## First-party screenshots
 
-Screenshots in `public/images/` are rendered as hero device frames and are intended as first-party product proof.
+Screenshots in `public/images/` are rendered inside the hero's single-image viewer and are intended as first-party product proof.

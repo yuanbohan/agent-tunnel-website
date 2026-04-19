@@ -1,41 +1,26 @@
 export const siteContent = {
   brand: "Agent Tunnel",
   previewLabel: "Preview",
-  nav: [
-    { label: "Setup", href: "#setup" },
-    { label: "Access", href: "#access" },
-  ],
   githubUrl: "https://github.com/yuanbohan/tunnel",
   hero: {
-    eyebrow: "Terminal to phone",
-    titleLines: ["Run local agents.", "Check them on phone."],
+    eyebrow: "Local to phone",
+    titleLines: ["Run local agents.", "Check on phone."],
     actions: [
       { label: "Install tunnel", href: "#setup", variant: "primary" },
       { label: "Request access", href: "#access", variant: "secondary" },
     ],
-    terminal: {
-      eyebrow: "Core flow",
-      lines: [
-        {
-          command: "tunnel auth login",
-          note: "Save local auth on the machine.",
-        },
-        {
-          command: "tunnel run claude",
-          note: "Wrap the launcher you already use.",
-        },
-      ],
-    },
     screenshots: [
       {
         src: "/images/agent-tunnel-session-list.png",
-        alt: "Agent Tunnel mobile session list with recent output previews.",
-        label: "Sessions",
+        alt: "Agent Tunnel mobile session list showing live sessions and recent output previews.",
       },
       {
         src: "/images/agent-tunnel-session-detail.png",
-        alt: "Agent Tunnel mobile session detail with terminal output and input controls.",
-        label: "Attach",
+        alt: "Agent Tunnel mobile session detail showing the active terminal view.",
+      },
+      {
+        src: "/images/agent-tunnel-session-keyboard.png",
+        alt: "Agent Tunnel mobile session with the on-screen keyboard open for replying.",
       },
     ],
   },
