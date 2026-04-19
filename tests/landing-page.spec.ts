@@ -11,16 +11,41 @@ test("shows the updated engineer-facing onboarding surface on desktop", async ({
   await expect(
     page.getByRole("heading", {
       level: 1,
-      name: "Run local agents. Check them on phone.",
+      name: "Run local agents. Check on phone.",
     }),
   ).toBeVisible();
 
-  await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible();
   await expect(page.getByRole("link", { name: /github repository/i })).toHaveAttribute(
     "href",
     "https://github.com/yuanbohan/tunnel",
   );
-  await expect(page.getByTestId("hero-visual")).toBeVisible();
+  const heroVisual = page.getByTestId("hero-visual");
+  await expect(heroVisual).toBeVisible();
+  await expect(
+    heroVisual.getByAltText(
+      "Agent Tunnel mobile session list showing live sessions and recent output previews.",
+    ),
+  ).toBeVisible();
+  await expect(heroVisual.getByTestId("hero-viewer-image")).toHaveCount(1);
+
+  await heroVisual
+    .getByRole("button", { name: "Show next screenshot" })
+    .click();
+  await expect(
+    heroVisual.getByAltText(
+      "Agent Tunnel mobile session detail showing the active terminal view.",
+    ),
+  ).toBeVisible();
+  await expect(heroVisual.getByTestId("hero-viewer-image")).toHaveCount(1);
+
+  await heroVisual
+    .getByRole("button", { name: "Show previous screenshot" })
+    .click();
+  await expect(
+    heroVisual.getByAltText(
+      "Agent Tunnel mobile session list showing live sessions and recent output previews.",
+    ),
+  ).toBeVisible();
 
   const setupFlow = page.getByTestId("setup-flow");
   await expect(setupFlow).toBeVisible();
@@ -36,6 +61,9 @@ test("shows the updated engineer-facing onboarding surface on desktop", async ({
   await expect(
     contact.locator('a[href="https://github.com/yuanbohan"]'),
   ).toBeVisible();
+
+  await expect(page.getByText("Sessions")).toHaveCount(0);
+  await expect(page.getByText("Attach")).toHaveCount(0);
 });
 
 test("keeps the mobile view readable without horizontal overflow", async ({
@@ -54,9 +82,10 @@ test("keeps the mobile view readable without horizontal overflow", async ({
   await expect(
     page.getByRole("heading", {
       level: 1,
-      name: "Run local agents. Check them on phone.",
+      name: "Run local agents. Check on phone.",
     }),
   ).toBeVisible();
+  await expect(page.getByTestId("hero-visual")).toBeVisible();
   const setupFlow = page.getByTestId("setup-flow");
   await expect(setupFlow).toBeVisible();
   await expect(setupFlow.getByText(INSTALL_COMMAND)).toBeVisible();
