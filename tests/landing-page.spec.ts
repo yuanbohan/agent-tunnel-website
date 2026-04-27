@@ -8,10 +8,12 @@ test("shows the updated engineer-facing onboarding surface on desktop", async ({
 }) => {
   await page.goto("/");
 
+  await expect(page).toHaveTitle("移动编程 | 本地运行智能体，手机电脑协同工作");
+
   await expect(
     page.getByRole("heading", {
       level: 1,
-      name: "Run local agents. Check on phone.",
+      name: "本地运行智能体， 手机电脑协同",
     }),
   ).toBeVisible();
 
@@ -23,7 +25,7 @@ test("shows the updated engineer-facing onboarding surface on desktop", async ({
   await expect(heroVisual).toBeVisible();
   await expect(
     heroVisual.getByAltText(
-      "Agent Tunnel mobile session list showing live sessions and recent output previews.",
+      "移动编程手机端会话列表，展示运行中的会话和最近输出预览。",
     ),
   ).toBeVisible();
   await expect(heroVisual.getByTestId("hero-viewer-image")).toHaveCount(1);
@@ -33,7 +35,7 @@ test("shows the updated engineer-facing onboarding surface on desktop", async ({
     .click();
   await expect(
     heroVisual.getByAltText(
-      "Agent Tunnel mobile session detail showing the active terminal view.",
+      "移动编程手机端会话详情，展示当前终端输出。",
     ),
   ).toBeVisible();
   await expect(heroVisual.getByTestId("hero-viewer-image")).toHaveCount(1);
@@ -43,7 +45,7 @@ test("shows the updated engineer-facing onboarding surface on desktop", async ({
     .click();
   await expect(
     heroVisual.getByAltText(
-      "Agent Tunnel mobile session list showing live sessions and recent output previews.",
+      "移动编程手机端会话列表，展示运行中的会话和最近输出预览。",
     ),
   ).toBeVisible();
 
@@ -53,14 +55,11 @@ test("shows the updated engineer-facing onboarding surface on desktop", async ({
   await expect(setupFlow).toContainText("tunnel auth login");
   await expect(setupFlow).toContainText("tunnel run claude");
 
-  const contact = page.getByTestId("contact-card");
-  await expect(contact).toBeVisible();
-  await expect(
-    contact.locator('a[href="mailto:yuanbo.han@gmail.com"]'),
-  ).toBeVisible();
-  await expect(
-    contact.locator('a[href="https://github.com/yuanbohan"]'),
-  ).toBeVisible();
+  await expect(page.getByRole("link", { name: "申请体验" })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "申请内测" })).toHaveCount(0);
+  await expect(page.getByTestId("contact-card")).toHaveCount(0);
+  await expect(page.locator("footer").getByText("移动编程")).toHaveCount(0);
+  await expect(page.getByText("本地运行，手机电脑协同")).toBeVisible();
 
   await expect(page.getByText("Sessions")).toHaveCount(0);
   await expect(page.getByText("Attach")).toHaveCount(0);
@@ -82,7 +81,7 @@ test("keeps the mobile view readable without horizontal overflow", async ({
   await expect(
     page.getByRole("heading", {
       level: 1,
-      name: "Run local agents. Check on phone.",
+      name: "本地运行智能体， 手机电脑协同",
     }),
   ).toBeVisible();
   await expect(page.getByTestId("hero-visual")).toBeVisible();
@@ -91,5 +90,6 @@ test("keeps the mobile view readable without horizontal overflow", async ({
   await expect(setupFlow.getByText(INSTALL_COMMAND)).toBeVisible();
   await expect(setupFlow.getByText("tunnel auth login")).toBeVisible();
   await expect(setupFlow.getByText("tunnel run claude")).toBeVisible();
-  await expect(page.getByTestId("contact-card")).toBeVisible();
+  await expect(page.getByRole("link", { name: "申请体验" })).toHaveCount(0);
+  await expect(page.getByTestId("contact-card")).toHaveCount(0);
 });
