@@ -113,12 +113,15 @@ const setupStepsMarkup = siteContent.setup.steps
   )
   .join("");
 
-const contactLinksMarkup = siteContent.access.card.links
+const footerRecordsMarkup = [
+  siteContent.footer.icpRecord,
+  siteContent.footer.policeRecord,
+]
+  .filter((record) => record?.label && record?.href)
   .map(
-    (link) => `
-      <a class="contact-link" href="${escapeHtml(link.href)}">
-        <span class="contact-link__detail">${escapeHtml(link.detail)}</span>
-        <span class="contact-link__label">${escapeHtml(link.label)}</span>
+    (record) => `
+      <a class="footer-record" href="${escapeHtml(record.href)}" target="_blank" rel="noreferrer">
+        ${escapeHtml(record.label)}
       </a>
     `,
   )
@@ -193,33 +196,14 @@ document.querySelector("#app").innerHTML = `
           </div>
         </div>
       </section>
-
-      <section class="section section--access" id="access" aria-labelledby="access-title">
-        <div class="container access-grid">
-          <div class="section__intro">
-            <p class="eyebrow">${escapeHtml(siteContent.access.eyebrow)}</p>
-            <h2 id="access-title">${escapeHtml(siteContent.access.title)}</h2>
-            <p class="section__lede">${escapeHtml(siteContent.access.body)}</p>
-          </div>
-
-          <aside class="contact-card" data-testid="contact-card" aria-label="${escapeHtml(siteContent.access.card.title)}">
-            <header class="contact-card__header">
-              <span class="contact-card__dot" aria-hidden="true"></span>
-              <h3>${escapeHtml(siteContent.access.card.title)}</h3>
-            </header>
-            ${siteContent.access.card.note ? `<p class="contact-card__note">${escapeHtml(siteContent.access.card.note)}</p>` : ""}
-            <div class="contact-card__links">
-              ${contactLinksMarkup}
-            </div>
-          </aside>
-        </div>
-      </section>
     </main>
 
     <footer class="footer">
       <div class="container footer__inner">
-        <span>${escapeHtml(siteContent.brand)}</span>
-        <p>${escapeHtml(siteContent.footer.note)}</p>
+        <div class="footer__brandline">
+          <p>${escapeHtml(siteContent.footer.note)}</p>
+        </div>
+        ${footerRecordsMarkup ? `<div class="footer__records">${footerRecordsMarkup}</div>` : ""}
       </div>
     </footer>
   </div>
