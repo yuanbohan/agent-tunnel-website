@@ -60,6 +60,9 @@ test("shows the updated engineer-facing onboarding surface on desktop", async ({
   await expect(page.getByTestId("contact-card")).toHaveCount(0);
   await expect(page.locator("footer").getByText("移动编程")).toHaveCount(0);
   await expect(page.getByText("本地运行，手机电脑协同")).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "京ICP备2026024624号-1" }),
+  ).toHaveAttribute("href", "https://beian.miit.gov.cn/");
 
   await expect(page.getByText("Sessions")).toHaveCount(0);
   await expect(page.getByText("Attach")).toHaveCount(0);
@@ -92,4 +95,7 @@ test("keeps the mobile view readable without horizontal overflow", async ({
   await expect(setupFlow.getByText("tunnel run claude")).toBeVisible();
   await expect(page.getByRole("link", { name: "申请体验" })).toHaveCount(0);
   await expect(page.getByTestId("contact-card")).toHaveCount(0);
+  await expect(
+    page.getByRole("link", { name: "京ICP备2026024624号-1" }),
+  ).toBeVisible();
 });

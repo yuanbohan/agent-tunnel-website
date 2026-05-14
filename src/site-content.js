@@ -51,8 +51,8 @@ export const siteContent = {
   footer: {
     note: "本地运行，手机电脑协同",
     icpRecord: {
-      label: "",
-      href: "https://beian.miit.gov.cn",
+      label: "京ICP备2026024624号-1",
+      href: "https://beian.miit.gov.cn/",
     },
     policeRecord: {
       label: "",
